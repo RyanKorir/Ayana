@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Ayana Hill</title>
+<meta name="description" content="Browse Ayana Hill's curated catalog of fragrances, hair products, skincare, body care and sandals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Petit+Formal+Script&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="products">
+
+<header class="site-header" id="site-header"></header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">The full catalog</span>
+      <h1>Our <span class="script">Products</span></h1>
+      <p style="max-width:520px;margin:0 auto;">Fragrances, hair, skincare, body care and sandals — filter by category to find exactly what you're looking for.</p>
+      <div class="breadcrumb"><a href="index.html">Home</a> / Products</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="filter-row" id="filterRow"></div>
+      <div class="product-grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <section class="section tinted">
+    <div class="container cta-banner" style="background:linear-gradient(135deg,var(--rose),var(--rose-dark));">
+      <div>
+        <h2>Can't find what you need?</h2>
+        <p>New stock arrives often. Message us on WhatsApp and we'll let you know when it's in, or help you find an alternative.</p>
+      </div>
+      <a href="#" id="waCta" class="btn on-dark" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="js/shared.js"></script>
+<script src="js/products-data.js"></script>
+<script src="js/placeholder-art.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cta = document.getElementById('waCta');
+    if(cta) cta.href = `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent("Hi! I'm looking for a product I couldn't find on your site.")}`;
+  });
+</script>
+</body>
+</html>
