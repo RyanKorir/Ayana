@@ -40,16 +40,16 @@ function renderHeader(active){
   const link = (href,label,key) => `<a href="${href}" class="${active===key?'active':''}">${label}</a>`;
   el.innerHTML = `
     <div class="container">
-      <a href="index.html" class="brand">${CONTACT.brand}<small>Beauty &amp; Essentials</small></a>
+      <a href="/" class="brand">${CONTACT.brand}<small>Beauty &amp; Essentials</small></a>
       <div class="nav-backdrop" id="navBackdrop"></div>
       <nav class="nav-links" id="navLinks">
-        ${link('index.html','Home','home')}
-        ${link('products.html','Products','products')}
-        ${link('about.html','About &amp; Contact','about')}
-        <a href="about.html#visit" class="btn btn-sm mobile-only" style="margin-top:10px;">Visit the shop</a>
+        ${link('/','Home','home')}
+        ${link('/products','Products','products')}
+        ${link('/about','About &amp; Contact','about')}
+        <a href="/about#visit" class="btn btn-sm mobile-only" style="margin-top:10px;">Visit the shop</a>
       </nav>
       <div class="nav-cta">
-        <a href="about.html#visit" class="btn btn-sm">Visit the shop</a>
+        <a href="/about#visit" class="btn btn-sm">Visit the shop</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
@@ -93,19 +93,19 @@ function renderFooter(){
         <div>
           <h4>Explore</h4>
           <ul class="footer-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">All products</a></li>
-            <li><a href="about.html">Our story</a></li>
-            <li><a href="about.html#visit">Visit us</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">All products</a></li>
+            <li><a href="/about">Our story</a></li>
+            <li><a href="/about#visit">Visit us</a></li>
           </ul>
         </div>
         <div>
           <h4>Shop by category</h4>
           <ul class="footer-links">
-            <li><a href="products.html#fragrances">Fragrances</a></li>
-            <li><a href="products.html#hair">Hair &amp; hair products</a></li>
-            <li><a href="products.html#skincare">Skincare &amp; body care</a></li>
-            <li><a href="products.html#sandals">Sandals</a></li>
+            <li><a href="/products#fragrances">Fragrances</a></li>
+            <li><a href="/products#hair">Hair &amp; hair products</a></li>
+            <li><a href="/products#skincare">Skincare &amp; body care</a></li>
+            <li><a href="/products#sandals">Sandals</a></li>
           </ul>
         </div>
         <div>

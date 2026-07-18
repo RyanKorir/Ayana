@@ -62,7 +62,7 @@ function renderFilters(){
       row.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderProducts(btn.dataset.key);
-      history.replaceState(null, '', btn.dataset.key === 'all' ? 'products.html' : `products.html#${btn.dataset.key}`);
+      history.replaceState(null, '', btn.dataset.key === 'all' ? '/products' : `/products#${btn.dataset.key}`);
     });
   });
 }
