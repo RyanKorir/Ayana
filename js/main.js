@@ -78,9 +78,70 @@ function initMagnifyLenses(){
   });
 }
 
+// Touch/tap delight: a small burst of cherry-blossom petals falls from
+// wherever the person taps or clicks — a playful, on-brand response that
+// rewards interaction anywhere on the page.
+function initTouchPetalBurst(){
+  const colors = ['#B5405A','#E8A9BC','#C7A24C'];
+  const petalPath = 'M15 2 C20 6 20 12 15 15 C10 12 10 6 15 2Z';
+
+  function burst(x, y){
+    const count = 5 + Math.floor(Math.random()*3);
+    for(let i=0;i<count;i++){
+      const p = document.createElement('div');
+      p.className = 'tap-petal';
+      const size = 9 + Math.random()*10;
+      const drift = (Math.random()*90 - 45).toFixed(0);
+      const fall = (90 + Math.random()*70).toFixed(0);
+      const spin = (Math.random()*280 + 140).toFixed(0);
+      const duration = (0.8 + Math.random()*0.6).toFixed(2);
+      p.style.cssText = `
+        left:${x}px; top:${y}px; width:${size}px; height:${size}px;
+        --dx:${drift}px; --dy:${fall}px; --rot:${spin}deg;
+        animation-duration:${duration}s;
+      `;
+      p.innerHTML = `<svg viewBox="0 0 30 30" width="100%" height="100%"><path d="${petalPath}" fill="${colors[i % colors.length]}"/></svg>`;
+      document.body.appendChild(p);
+      p.addEventListener('animationend', () => p.remove());
+      setTimeout(() => p.remove(), 2200);
+    }
+  }
+
+  let lastBurst = 0;
+  document.addEventListener('pointerdown', (e) => {
+    const now = Date.now();
+    if(now - lastBurst < 90) return; // avoid spamming on fast multi-touch
+    lastBurst = now;
+    burst(e.clientX, e.clientY);
+  });
+}
+
+// Touch/tap delight: a soft expanding ripple on every button tap,
+// giving immediate tactile feedback (works for mouse clicks too).
+function initButtonRipples(){
+  document.querySelectorAll('.btn, .filter-btn').forEach(btn => {
+    btn.style.position = btn.style.position || 'relative';
+    btn.style.overflow = 'hidden';
+    btn.addEventListener('pointerdown', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height) * 1.6;
+      ripple.className = 'btn-ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+      btn.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+      setTimeout(() => ripple.remove(), 900);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initReveals();
   initBackToTop();
   initPetals();
   initMagnifyLenses();
+  initTouchPetalBurst();
+  initButtonRipples();
 });
