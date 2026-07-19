@@ -27,6 +27,24 @@
           <a href="/products" class="btn">Explore products</a>
           <a href="/about#visit" class="btn ghost">Visit our shop</a>
         </div>
+
+        <!-- Compact seal shown only on mobile/tablet in place of the large spinning badge -->
+        <div class="mobile-seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120" class="mobile-seal-ring">
+            <defs>
+              <path id="mSealPath" d="M 60,60 m -47,0 a 47,47 0 1,1 94,0 a 47,47 0 1,1 -94,0" />
+            </defs>
+            <circle cx="60" cy="60" r="58" fill="#B5405A"/>
+            <circle cx="60" cy="60" r="47" fill="none" stroke="#F7DCE4" stroke-width="1" stroke-dasharray="1.5 5"/>
+            <text font-family="Jost, sans-serif" font-size="6.4" letter-spacing="2.6" fill="#FBEDF1">
+              <textPath href="#mSealPath" startOffset="0%">AYANA HILL &#8226; OPEN NOW &#8226; </textPath>
+            </text>
+            <text x="60" y="57" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#fff">Open</text>
+            <text x="60" y="70" text-anchor="middle" font-family="Jost, sans-serif" font-size="5" letter-spacing="1" fill="#F7DCE4">9AM–6PM</text>
+          </svg>
+          <span class="mobile-seal-label">Mon &ndash; Sat &#8226; Kericho</span>
+        </div>
+
         <div class="hero-stats">
           <div><strong>4</strong><span>Curated categories</span></div>
           <div><strong>6</strong><span>Days open a week</span></div>
