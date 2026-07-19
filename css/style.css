@@ -261,18 +261,31 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
     linear-gradient(180deg, var(--cream), var(--cream));
   overflow:hidden;
 }
+
+/* hero-copy is a pass-through wrapper: display:contents lets its children
+   (eyebrow, heading, lede, actions, stats) join the parent grid directly,
+   so we can place the wheel between any two of them per breakpoint without
+   touching the DOM or duplicating markup. */
+.hero-copy{ display:contents; }
+
 .hero .container{
-  display:grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 4vw, 60px); align-items:center;
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(28px, 4vw, 60px);
+  align-items:center;
+  grid-template-areas:
+    "eyebrow visual"
+    "heading visual"
+    "lede    visual"
+    "actions visual"
+    "stats   visual";
 }
-/* Source order is: hero-visual, then hero-copy (wheel-first suits mobile).
-   On desktop we flip the visual order so copy reads left, wheel sits right. */
-.hero-visual{ order:2; }
-.hero-copy{ order:1; position:relative; z-index:2; }
-.hero-copy h1{ margin: .3em 0 .5em; }
-.hero-copy h1 em{ font-style:normal; }
-.hero-copy .lede{ max-width: 460px; font-size:1.06rem; }
-.hero-actions{ display:flex; gap:16px; margin-top: 34px; flex-wrap:wrap; }
-.hero-stats{ display:flex; gap:clamp(20px,4vw,34px); margin-top:52px; flex-wrap:wrap; }
+.hero-copy > .eyebrow{ grid-area: eyebrow; }
+.hero-copy > h1{ grid-area: heading; margin: .3em 0 .5em; }
+.hero-copy > h1 em{ font-style:normal; }
+.hero-copy > .lede{ grid-area: lede; max-width: 460px; font-size:1.06rem; }
+.hero-actions{ grid-area: actions; display:flex; gap:16px; margin-top: 34px; flex-wrap:wrap; }
+.hero-stats{ grid-area: stats; display:flex; gap:clamp(20px,4vw,34px); margin-top:52px; flex-wrap:wrap; }
 .hero-stats div{ border-left:1px solid rgba(43,22,32,.15); padding-left:16px; }
 .hero-stats strong{ display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--rose-dark); }
 .hero-stats span{ font-size:.76rem; color:var(--ink-soft); letter-spacing:.02em; }
@@ -280,6 +293,7 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
 /* The one wheel — sized fluidly with clamp() so it scales cleanly from the
    smallest phone up through desktop and never needs a second, different design. */
 .hero-visual{
+  grid-area: visual;
   display:flex; align-items:center; justify-content:center;
   padding: 6px 0;
 }
@@ -290,21 +304,31 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   filter: drop-shadow(0 14px 26px rgba(138,46,68,.28));
 }
 
-/* Tablets and phones: stack the hero — wheel first (its own breathing room),
-   headline and copy below, fully in normal flow so nothing can overlap. */
+/* Tablets and phones: single column, wheel centered right after the
+   paragraph — small and self-contained, never crowding the text. */
 @media (max-width: 900px){
   .hero{ min-height:auto; text-align:center; }
-  .hero .container{ grid-template-columns: 1fr; }
-  .hero-visual{ order:1; margin-bottom: 6px; }
-  .hero-copy{ order:2; display:flex; flex-direction:column; align-items:center; }
-  .hero-copy .lede{ margin-left:auto; margin-right:auto; }
+  .hero .container{
+    grid-template-columns: 1fr;
+    justify-items:center;
+    grid-template-areas:
+      "eyebrow"
+      "heading"
+      "lede"
+      "visual"
+      "actions"
+      "stats";
+  }
+  .hero-copy > .lede{ margin-left:auto; margin-right:auto; }
   .hero-actions, .hero-stats{ justify-content:center; }
   .hero-stats{ margin-top:30px; }
+  .hero-visual{ margin: 6px 0 4px; padding:0; }
+  .hero-badge{ width: clamp(96px, 30vw, 150px); height: clamp(96px, 30vw, 150px); }
 }
 @media (max-width: 420px){
   .hero-stats{ gap:18px; }
   .hero-stats div{ padding-left:12px; }
-  .hero-badge{ width: 42vw; height:42vw; }
+  .hero-badge{ width: clamp(84px, 26vw, 120px); height: clamp(84px, 26vw, 120px); }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
 .hero-blossom{ position:absolute; inset:0; }
