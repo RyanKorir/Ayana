@@ -304,10 +304,10 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   filter: drop-shadow(0 14px 26px rgba(138,46,68,.28));
 }
 
-/* Tablets and phones: single column, no decorative wheel — at small sizes
-   its rotating text ring can't stay legible, so it's dropped rather than
-   shrunk into illegibility. Open hours/location already live in the footer
-   and the About page's visit section, so nothing is actually lost. */
+/* Tablets and phones: single column, wheel brought back in — small,
+   self-contained, and given its own centered grid slot between the
+   description and the call-to-action buttons so it never crowds or
+   sits behind the text. */
 @media (max-width: 900px){
   .hero{ min-height:auto; text-align:center; }
   .hero .container{
@@ -317,17 +317,34 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
       "eyebrow"
       "heading"
       "lede"
+      "visual"
       "actions"
       "stats";
   }
   .hero-copy > .lede{ margin-left:auto; margin-right:auto; }
   .hero-actions, .hero-stats{ justify-content:center; }
   .hero-stats{ margin-top:30px; }
-  .hero-visual{ display:none; }
+  .hero-visual{
+    width:100%;
+    margin: 10px 0 6px;
+    padding:0;
+    position:relative;
+    z-index:1;
+  }
+  .hero-badge{
+    width: clamp(120px, 26vw, 190px);
+    height: clamp(120px, 26vw, 190px);
+    margin:0 auto;
+  }
 }
 @media (max-width: 420px){
   .hero-stats{ gap:18px; }
   .hero-stats div{ padding-left:12px; }
+  .hero-visual{ margin: 6px 0 4px; }
+  .hero-badge{
+    width: clamp(100px, 32vw, 140px);
+    height: clamp(100px, 32vw, 140px);
+  }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
 .hero-blossom{ position:absolute; inset:0; }
