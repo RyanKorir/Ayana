@@ -332,8 +332,8 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
     z-index:1;
   }
   .hero-badge{
-    width: clamp(200px, 42vw, 320px);
-    height: clamp(200px, 42vw, 320px);
+    width: clamp(170px, 42vw, 320px);
+    height: clamp(170px, 42vw, 320px);
     margin:0 auto;
   }
 }
@@ -341,10 +341,26 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   .hero-stats{ gap:18px; }
   .hero-stats div{ padding-left:12px; }
   .hero-visual{ margin: 6px 0 4px; }
-  .hero-badge{
-    width: clamp(125px, 38vw, 170px);
-    height: clamp(125px, 38vw, 170px);
+}
+
+/* Phone turned sideways: width can jump past the 900px breakpoint (large
+   phones are ~900-930px wide in landscape) while height drops to ~350-430px.
+   Height is the real constraint here, not width, so key off max-height
+   directly — this catches phone landscape regardless of exact width and
+   leaves tablets/desktops (which stay tall even in landscape) untouched. */
+@media (orientation: landscape) and (max-height: 560px){
+  .hero{
+    min-height: auto;
+    padding-top: clamp(56px, 12vh, 90px);
+    padding-bottom: clamp(16px, 4vh, 28px);
   }
+  .hero-visual{ margin: 4px 0; }
+  .hero-badge{
+    width: clamp(100px, 24vh, 190px);
+    height: clamp(100px, 24vh, 190px);
+  }
+  .hero-actions{ margin-top: 14px; }
+  .hero-stats{ margin-top: 16px; }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
 .hero-blossom{ position:absolute; inset:0; }
