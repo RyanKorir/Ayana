@@ -317,30 +317,17 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
       "eyebrow"
       "heading"
       "lede"
-      "visual"
       "actions"
       "stats";
   }
   .hero-copy > .lede{ margin-left:auto; margin-right:auto; }
   .hero-actions, .hero-stats{ justify-content:center; }
   .hero-stats{ margin-top:30px; }
-  .hero-visual{
-    width:100%;
-    margin: 10px 0 6px;
-    padding:0;
-    position:relative;
-    z-index:1;
-  }
-  .hero-badge{
-    width: clamp(170px, 42vw, 320px);
-    height: clamp(170px, 42vw, 320px);
-    margin:0 auto;
-  }
+  .hero-visual{ display:none; }
 }
 @media (max-width: 420px){
   .hero-stats{ gap:18px; }
   .hero-stats div{ padding-left:12px; }
-  .hero-visual{ margin: 6px 0 4px; }
 }
 
 /* Phone turned sideways: width can jump past the 900px breakpoint (large
