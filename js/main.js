@@ -22,6 +22,53 @@ function initBackToTop(){
   btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 }
 
+// Soft drifting background clouds — barely-there blush shapes that
+// float slowly across the hero and breathe gently on every tap/click.
+function initClouds(){
+  const field = document.getElementById('cloudField');
+  if(!field) return;
+
+  // A single fluffy cloud shape built from overlapping ellipses
+  function cloudSVG(w, h, color){
+    const rx = w * 0.5, ry = h * 0.46;
+    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="${w*0.5}"  cy="${h*0.62}" rx="${rx}"     ry="${ry*0.72}" fill="${color}"/>
+      <ellipse cx="${w*0.33}" cy="${h*0.52}" rx="${rx*0.52}" ry="${ry*0.62}" fill="${color}"/>
+      <ellipse cx="${w*0.67}" cy="${h*0.48}" rx="${rx*0.44}" ry="${ry*0.58}" fill="${color}"/>
+      <ellipse cx="${w*0.5}"  cy="${h*0.42}" rx="${rx*0.38}" ry="${ry*0.48}" fill="${color}"/>
+    </svg>`;
+  }
+
+  const palette = ['rgba(229,175,192,0.18)','rgba(219,155,178,0.14)','rgba(240,195,210,0.16)'];
+  const count = window.innerWidth < 700 ? 4 : 7;
+
+  for(let i = 0; i < count; i++){
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    const w = 120 + Math.random() * 220;
+    const h = w * (0.38 + Math.random() * 0.22);
+    const top = 4 + Math.random() * 82;           // % down the hero
+    const dur = 28 + Math.random() * 38;           // slow drift
+    const delay = -(Math.random() * dur);          // pre-stagger so they're already mid-flight
+    const color = palette[i % palette.length];
+
+    c.style.cssText = `top:${top}%; width:${w}px; height:${h}px;
+      animation-duration:${dur}s; animation-delay:${delay}s;`;
+    c.innerHTML = cloudSVG(w, h, color);
+    field.appendChild(c);
+  }
+
+  // On every tap/click nudge all clouds upward briefly
+  let nudgeTimer = null;
+  document.addEventListener('pointerdown', () => {
+    field.querySelectorAll('.cloud').forEach(c => c.classList.add('nudge'));
+    clearTimeout(nudgeTimer);
+    nudgeTimer = setTimeout(() => {
+      field.querySelectorAll('.cloud').forEach(c => c.classList.remove('nudge'));
+    }, 600);
+  });
+}
+
 // Falling cherry-blossom petals in the hero
 function initPetals(){
   const field = document.getElementById('petalField');
@@ -140,6 +187,7 @@ function initButtonRipples(){
 document.addEventListener('DOMContentLoaded', () => {
   initReveals();
   initBackToTop();
+  initClouds();
   initPetals();
   initMagnifyLenses();
   initTouchPetalBurst();
