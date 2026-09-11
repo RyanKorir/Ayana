@@ -298,8 +298,8 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   padding: 6px 0;
 }
 .hero-badge{
-  width: clamp(150px, 46vw, 380px);
-  height: clamp(150px, 46vw, 380px);
+  width: clamp(170px, 50vw, 430px);
+  height: clamp(170px, 50vw, 430px);
   animation: spin 34s linear infinite;
   filter: drop-shadow(0 14px 26px rgba(138,46,68,.28));
 }
@@ -350,8 +350,8 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   .hero-stats{ margin-top: 16px; }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
-/* Drifting background clouds — very soft, barely-there pink shapes
-   that float slowly across the hero and nudge gently on tap/click */
+/* Drifting background clouds — soft blush shapes that float slowly
+   across the hero and breathe upward on every tap/click */
 .hero-clouds{
   position:absolute; inset:0;
   pointer-events:none;
@@ -363,17 +363,17 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   opacity:0;
   animation: cloud-drift linear infinite;
   will-change: transform, opacity;
-  transition: transform 1.2s cubic-bezier(.25,.46,.45,.94);
+  transition: transform 1.4s cubic-bezier(.25,.46,.45,.94);
 }
 .cloud svg{ display:block; }
 @keyframes cloud-drift{
-  0%  { transform: translateX(-18%) translateY(0);   opacity:0; }
-  8%  { opacity:1; }
-  90% { opacity:.7; }
-  100%{ transform: translateX(108%) translateY(-18px); opacity:0; }
+  0%  { transform: translateX(-260px) translateY(0px);  opacity:0; }
+  6%  { opacity:1; }
+  88% { opacity:1; }
+  100%{ transform: translateX(110vw)  translateY(-22px); opacity:0; }
 }
-/* nudge class added/removed by JS on pointer events */
-.cloud.nudge{ transform: translateY(-12px) scale(1.04) !important; }
+/* nudge upward briefly when the user taps/clicks */
+.cloud.nudge{ transform: translateY(-16px) scale(1.05) !important; }
 
 .hero-blossom{ position:absolute; inset:0; }
 .petal{

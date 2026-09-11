@@ -39,17 +39,25 @@ function initClouds(){
     </svg>`;
   }
 
-  const palette = ['rgba(229,175,192,0.18)','rgba(219,155,178,0.14)','rgba(240,195,210,0.16)'];
-  const count = window.innerWidth < 700 ? 4 : 7;
+  // Richer colours — soft blush/rose at 38–52% opacity so they're
+  // clearly visible yet still feel like background texture, not UI.
+  const palette = [
+    'rgba(229,175,192,0.42)',
+    'rgba(219,145,168,0.36)',
+    'rgba(240,200,215,0.48)',
+    'rgba(210,140,165,0.38)'
+  ];
+  const count = window.innerWidth < 700 ? 5 : 8;
 
   for(let i = 0; i < count; i++){
     const c = document.createElement('div');
     c.className = 'cloud';
-    const w = 120 + Math.random() * 220;
+    // Bigger clouds so they read clearly as cloud shapes
+    const w = 180 + Math.random() * 280;
     const h = w * (0.38 + Math.random() * 0.22);
-    const top = 4 + Math.random() * 82;           // % down the hero
-    const dur = 28 + Math.random() * 38;           // slow drift
-    const delay = -(Math.random() * dur);          // pre-stagger so they're already mid-flight
+    const top = 3 + Math.random() * 80;           // % down the hero
+    const dur = 30 + Math.random() * 35;           // slow, dreamy drift
+    const delay = -(Math.random() * dur);          // pre-stagger mid-flight
     const color = palette[i % palette.length];
 
     c.style.cssText = `top:${top}%; width:${w}px; height:${h}px;
@@ -58,14 +66,14 @@ function initClouds(){
     field.appendChild(c);
   }
 
-  // On every tap/click nudge all clouds upward briefly
+  // Tap/click: nudge all clouds upward briefly in sync with petals
   let nudgeTimer = null;
   document.addEventListener('pointerdown', () => {
     field.querySelectorAll('.cloud').forEach(c => c.classList.add('nudge'));
     clearTimeout(nudgeTimer);
     nudgeTimer = setTimeout(() => {
       field.querySelectorAll('.cloud').forEach(c => c.classList.remove('nudge'));
-    }, 600);
+    }, 700);
   });
 }
 
