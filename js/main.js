@@ -22,58 +22,66 @@ function initBackToTop(){
   btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 }
 
-// Soft drifting background clouds — barely-there blush shapes that
-// float slowly across the hero and breathe gently on every tap/click.
+// Real fluffy clouds — each one is a unique SVG made of many overlapping
+// soft circles, drifting purely left-to-right at a steady pace.
+// On tap/click every cloud gently lifts a few pixels (parallax breath)
+// then floats back down — no clumping, no jitter, no side-to-side chaos.
 function initClouds(){
   const field = document.getElementById('cloudField');
   if(!field) return;
 
-  // A single fluffy cloud shape built from overlapping ellipses
-  function cloudSVG(w, h, color){
-    const rx = w * 0.5, ry = h * 0.46;
-    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="${w*0.5}"  cy="${h*0.62}" rx="${rx}"     ry="${ry*0.72}" fill="${color}"/>
-      <ellipse cx="${w*0.33}" cy="${h*0.52}" rx="${rx*0.52}" ry="${ry*0.62}" fill="${color}"/>
-      <ellipse cx="${w*0.67}" cy="${h*0.48}" rx="${rx*0.44}" ry="${ry*0.58}" fill="${color}"/>
-      <ellipse cx="${w*0.5}"  cy="${h*0.42}" rx="${rx*0.38}" ry="${ry*0.48}" fill="${color}"/>
-    </svg>`;
+  function makeCloudSVG(seed){
+    let s = seed;
+    function rnd(){ s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; }
+    const W = 320, H = 130;
+    const fill = 'rgba(233,182,200,0.55)';
+    const circles = [];
+    const baseCount = 6 + Math.floor(rnd() * 3);
+    for(let i = 0; i < baseCount; i++){
+      const cx = 20 + (i / (baseCount - 1)) * (W - 40) + (rnd() - 0.5) * 22;
+      const cy = H * 0.72 + (rnd() - 0.5) * 10;
+      const r  = 28 + rnd() * 22;
+      circles.push({ cx, cy, r });
+    }
+    const topCount = 3 + Math.floor(rnd() * 3);
+    for(let i = 0; i < topCount; i++){
+      const cx = W * 0.18 + (i / (topCount - 1)) * W * 0.64 + (rnd() - 0.5) * 28;
+      const cy = H * 0.44 - rnd() * 20;
+      const r  = 22 + rnd() * 30;
+      circles.push({ cx, cy, r });
+    }
+    circles.push({ cx: W * 0.38 + rnd() * W * 0.24, cy: H * 0.68, r: 34 + rnd() * 18 });
+    const cStr = circles
+      .map(c => `<circle cx="${c.cx.toFixed(1)}" cy="${c.cy.toFixed(1)}" r="${c.r.toFixed(1)}" fill="${fill}"/>`)
+      .join('');
+    return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:visible">${cStr}</svg>`;
   }
 
-  // Richer colours — soft blush/rose at 38–52% opacity so they're
-  // clearly visible yet still feel like background texture, not UI.
-  const palette = [
-    'rgba(229,175,192,0.42)',
-    'rgba(219,145,168,0.36)',
-    'rgba(240,200,215,0.48)',
-    'rgba(210,140,165,0.38)'
-  ];
-  const count = window.innerWidth < 700 ? 5 : 8;
+  const count  = window.innerWidth < 700 ? 4 : 7;
+  const clouds = [];
 
   for(let i = 0; i < count; i++){
-    const c = document.createElement('div');
-    c.className = 'cloud';
-    // Bigger clouds so they read clearly as cloud shapes
-    const w = 180 + Math.random() * 280;
-    const h = w * (0.38 + Math.random() * 0.22);
-    const top = 3 + Math.random() * 80;           // % down the hero
-    const dur = 30 + Math.random() * 35;           // slow, dreamy drift
-    const delay = -(Math.random() * dur);          // pre-stagger mid-flight
-    const color = palette[i % palette.length];
-
-    c.style.cssText = `top:${top}%; width:${w}px; height:${h}px;
-      animation-duration:${dur}s; animation-delay:${delay}s;`;
-    c.innerHTML = cloudSVG(w, h, color);
-    field.appendChild(c);
+    const el     = document.createElement('div');
+    el.className = 'cloud';
+    const scale    = 0.55 + Math.random() * 0.7;
+    const topPct   = 5  + Math.random() * 70;
+    const durSec   = 45 + Math.random() * 50;
+    const delaySec = -(Math.random() * durSec);
+    const opacity  = 0.55 + scale * 0.3;
+    el.style.cssText = `top:${topPct}%;transform:scale(${scale.toFixed(2)});transform-origin:left center;opacity:${opacity.toFixed(2)};--dur:${durSec.toFixed(1)}s;--delay:${delaySec.toFixed(1)}s;`;
+    el.innerHTML = makeCloudSVG(i * 9973 + 31337);
+    field.appendChild(el);
+    clouds.push(el);
   }
 
-  // Tap/click: nudge all clouds upward briefly in sync with petals
-  let nudgeTimer = null;
   document.addEventListener('pointerdown', () => {
-    field.querySelectorAll('.cloud').forEach(c => c.classList.add('nudge'));
-    clearTimeout(nudgeTimer);
-    nudgeTimer = setTimeout(() => {
-      field.querySelectorAll('.cloud').forEach(c => c.classList.remove('nudge'));
-    }, 700);
+    clouds.forEach(el => {
+      const sc   = parseFloat(el.style.transform.replace('scale(','')) || 1;
+      const lift = -(6 + sc * 8);
+      el.style.marginTop = lift + 'px';
+      clearTimeout(el._ct);
+      el._ct = setTimeout(() => { el.style.marginTop = '0px'; }, 900);
+    });
   });
 }
 

@@ -350,8 +350,7 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   .hero-stats{ margin-top: 16px; }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
-/* Drifting background clouds — soft blush shapes that float slowly
-   across the hero and breathe upward on every tap/click */
+/* Real fluffy clouds — drift purely left-to-right, breathe upward on tap */
 .hero-clouds{
   position:absolute; inset:0;
   pointer-events:none;
@@ -360,20 +359,20 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
 }
 .cloud{
   position:absolute;
-  opacity:0;
-  animation: cloud-drift linear infinite;
-  will-change: transform, opacity;
-  transition: transform 1.4s cubic-bezier(.25,.46,.45,.94);
+  left:0;
+  /* horizontal drift only — pure translateX so the cloud shape never distorts */
+  animation: cloud-drift var(--dur, 60s) var(--delay, 0s) linear infinite;
+  /* smooth vertical breath on pointerdown via margin-top JS */
+  transition: margin-top 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, margin-top;
+  margin-top: 0;
 }
-.cloud svg{ display:block; }
 @keyframes cloud-drift{
-  0%  { transform: translateX(-260px) translateY(0px);  opacity:0; }
-  6%  { opacity:1; }
-  88% { opacity:1; }
-  100%{ transform: translateX(110vw)  translateY(-22px); opacity:0; }
+  0%   { transform: translateX(-380px); opacity:0; }
+  4%   { opacity:1; }
+  92%  { opacity:1; }
+  100% { transform: translateX(110vw);  opacity:0; }
 }
-/* nudge upward briefly when the user taps/clicks */
-.cloud.nudge{ transform: translateY(-16px) scale(1.05) !important; }
 
 .hero-blossom{ position:absolute; inset:0; }
 .petal{
