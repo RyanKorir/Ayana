@@ -22,69 +22,6 @@ function initBackToTop(){
   btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 }
 
-// Real fluffy clouds — each one is a unique SVG made of many overlapping
-// soft circles, drifting purely left-to-right at a steady pace.
-// On tap/click every cloud gently lifts a few pixels (parallax breath)
-// then floats back down — no clumping, no jitter, no side-to-side chaos.
-function initClouds(){
-  const field = document.getElementById('cloudField');
-  if(!field) return;
-
-  function makeCloudSVG(seed){
-    let s = seed;
-    function rnd(){ s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; }
-    const W = 320, H = 130;
-    const fill = 'rgba(233,182,200,0.55)';
-    const circles = [];
-    const baseCount = 6 + Math.floor(rnd() * 3);
-    for(let i = 0; i < baseCount; i++){
-      const cx = 20 + (i / (baseCount - 1)) * (W - 40) + (rnd() - 0.5) * 22;
-      const cy = H * 0.72 + (rnd() - 0.5) * 10;
-      const r  = 28 + rnd() * 22;
-      circles.push({ cx, cy, r });
-    }
-    const topCount = 3 + Math.floor(rnd() * 3);
-    for(let i = 0; i < topCount; i++){
-      const cx = W * 0.18 + (i / (topCount - 1)) * W * 0.64 + (rnd() - 0.5) * 28;
-      const cy = H * 0.44 - rnd() * 20;
-      const r  = 22 + rnd() * 30;
-      circles.push({ cx, cy, r });
-    }
-    circles.push({ cx: W * 0.38 + rnd() * W * 0.24, cy: H * 0.68, r: 34 + rnd() * 18 });
-    const cStr = circles
-      .map(c => `<circle cx="${c.cx.toFixed(1)}" cy="${c.cy.toFixed(1)}" r="${c.r.toFixed(1)}" fill="${fill}"/>`)
-      .join('');
-    return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:visible">${cStr}</svg>`;
-  }
-
-  const count  = window.innerWidth < 700 ? 4 : 7;
-  const clouds = [];
-
-  for(let i = 0; i < count; i++){
-    const el     = document.createElement('div');
-    el.className = 'cloud';
-    const scale    = 0.55 + Math.random() * 0.7;
-    const topPct   = 5  + Math.random() * 70;
-    const durSec   = 45 + Math.random() * 50;
-    const delaySec = -(Math.random() * durSec);
-    const opacity  = 0.55 + scale * 0.3;
-    el.style.cssText = `top:${topPct}%;transform:scale(${scale.toFixed(2)});transform-origin:left center;opacity:${opacity.toFixed(2)};--dur:${durSec.toFixed(1)}s;--delay:${delaySec.toFixed(1)}s;`;
-    el.innerHTML = makeCloudSVG(i * 9973 + 31337);
-    field.appendChild(el);
-    clouds.push(el);
-  }
-
-  document.addEventListener('pointerdown', () => {
-    clouds.forEach(el => {
-      const sc   = parseFloat(el.style.transform.replace('scale(','')) || 1;
-      const lift = -(6 + sc * 8);
-      el.style.marginTop = lift + 'px';
-      clearTimeout(el._ct);
-      el._ct = setTimeout(() => { el.style.marginTop = '0px'; }, 900);
-    });
-  });
-}
-
 // Falling cherry-blossom petals in the hero
 function initPetals(){
   const field = document.getElementById('petalField');
@@ -203,7 +140,6 @@ function initButtonRipples(){
 document.addEventListener('DOMContentLoaded', () => {
   initReveals();
   initBackToTop();
-  initClouds();
   initPetals();
   initMagnifyLenses();
   initTouchPetalBurst();

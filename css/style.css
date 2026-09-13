@@ -350,29 +350,6 @@ p{ margin:0 0 1em; color: var(--ink-soft); }
   .hero-stats{ margin-top: 16px; }
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
-/* Real fluffy clouds — drift purely left-to-right, breathe upward on tap */
-.hero-clouds{
-  position:absolute; inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:0;
-}
-.cloud{
-  position:absolute;
-  left:0;
-  /* horizontal drift only — pure translateX so the cloud shape never distorts */
-  animation: cloud-drift var(--dur, 60s) var(--delay, 0s) linear infinite;
-  /* smooth vertical breath on pointerdown via margin-top JS */
-  transition: margin-top 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: transform, margin-top;
-  margin-top: 0;
-}
-@keyframes cloud-drift{
-  0%   { transform: translateX(-380px); opacity:0; }
-  4%   { opacity:1; }
-  92%  { opacity:1; }
-  100% { transform: translateX(110vw);  opacity:0; }
-}
 
 .hero-blossom{ position:absolute; inset:0; }
 .petal{
